@@ -1,49 +1,36 @@
-/*!
- * ignore
- */
-
-'use strict';
-
-const assert = require('assert');
-const mquery = require('mquery');
-
-/**
- * Helper for multiplexing promise implementations
- *
- * @api private
- */
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.PromiseProvider = void 0;
+const error_1 = require("./error");
+/** @internal */
+const kPromise = Symbol('promise');
 const store = {
-  _promise: null
+    [kPromise]: undefined
 };
-
 /**
- * Get the current promise constructor
- *
- * @api private
+ * Global promise store allowing user-provided promises
+ * @public
  */
-
-store.get = function() {
-  return store._promise;
-};
-
-/**
- * Set the current promise constructor
- *
- * @api private
- */
-
-store.set = function(lib) {
-  assert.ok(typeof lib === 'function',
-    `mongoose.Promise must be a function, got ${lib}`);
-  store._promise = lib;
-  mquery.Promise = lib;
-};
-
-/*!
- * Use native promises by default
- */
-
-store.set(global.Promise);
-
-module.exports = store;
+class PromiseProvider {
+    /** Validates the passed in promise library */
+    static validate(lib) {
+        if (typeof lib !== 'function')
+            throw new error_1.MongoInvalidArgumentError(`Promise must be a function, got ${lib}`);
+        return !!lib;
+    }
+    /** Sets the promise library */
+    static set(lib) {
+        if (!PromiseProvider.validate(lib)) {
+            // validate
+            return;
+        }
+        store[kPromise] = lib;
+    }
+    /** Get the stored promise library, or resolves passed in */
+    static get() {
+        return store[kPromise];
+    }
+}
+exports.PromiseProvider = PromiseProvider;
+PromiseProvider.set(global.Promise);
+//# sourceMappingURL=promise_provider.js.map
