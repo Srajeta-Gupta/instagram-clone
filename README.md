@@ -1,381 +1,366 @@
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/13700/35731649-652807e8-080e-11e8-88fd-1b2f6d553b2d.png" alt="Nodemon Logo">
-</p>
+# Mongoose
 
-# nodemon
+Mongoose is a [MongoDB](https://www.mongodb.org/) object modeling tool designed to work in an asynchronous environment. Mongoose supports both promises and callbacks.
 
-nodemon is a tool that helps develop Node.js based applications by automatically restarting the node application when file changes in the directory are detected.
+[![Slack Status](https://img.shields.io/badge/slack-mongoosejsteam-34D058.svg?logo=slack )](https://mongoosejsteam.slack.com)
+[![Build Status](https://github.com/Automattic/mongoose/workflows/Test/badge.svg)](https://github.com/Automattic/mongoose)
+[![NPM version](https://badge.fury.io/js/mongoose.svg)](http://badge.fury.io/js/mongoose)
 
-nodemon does **not** require *any* additional changes to your code or method of development. nodemon is a replacement wrapper for `node`. To use `nodemon`, replace the word `node` on the command line when executing your script.
+[![npm](https://nodei.co/npm/mongoose.png)](https://www.npmjs.com/package/mongoose)
 
-[![NPM version](https://badge.fury.io/js/nodemon.svg)](https://npmjs.org/package/nodemon)
-[![Travis Status](https://travis-ci.org/remy/nodemon.svg?branch=master)](https://travis-ci.org/remy/nodemon) [![Backers on Open Collective](https://opencollective.com/nodemon/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/nodemon/sponsors/badge.svg)](#sponsors)
+## Documentation
 
-# Installation
+The official documentation website is [mongoosejs.com](http://mongoosejs.com/).
 
-Either through cloning with git or by using [npm](http://npmjs.org) (the recommended way):
+Mongoose 6.0.0 was released on August 24, 2021. You can find more details on [backwards breaking changes in 6.0.0 on our docs site](https://mongoosejs.com/docs/migrating_to_6.html).
 
-```bash
-npm install -g nodemon # or using yarn: yarn global add nodemon
+## Support
+
+  - [Stack Overflow](http://stackoverflow.com/questions/tagged/mongoose)
+  - [Bug Reports](https://github.com/Automattic/mongoose/issues/)
+  - [Mongoose Slack Channel](http://slack.mongoosejs.io/)
+  - [Help Forum](http://groups.google.com/group/mongoose-orm)
+  - [MongoDB Support](https://docs.mongodb.org/manual/support/)
+
+## Plugins
+
+Check out the [plugins search site](http://plugins.mongoosejs.io/) to see hundreds of related modules from the community. Next, learn how to write your own plugin from the [docs](http://mongoosejs.com/docs/plugins.html) or [this blog post](http://thecodebarbarian.com/2015/03/06/guide-to-mongoose-plugins).
+
+## Contributors
+
+Pull requests are always welcome! Please base pull requests against the `master`
+branch and follow the [contributing guide](https://github.com/Automattic/mongoose/blob/master/CONTRIBUTING.md).
+
+If your pull requests makes documentation changes, please do **not**
+modify any `.html` files. The `.html` files are compiled code, so please make
+your changes in `docs/*.pug`, `lib/*.js`, or `test/docs/*.js`.
+
+View all 400+ [contributors](https://github.com/Automattic/mongoose/graphs/contributors).
+
+## Installation
+
+First install [Node.js](http://nodejs.org/) and [MongoDB](https://www.mongodb.org/downloads). Then:
+
+```sh
+$ npm install mongoose
 ```
 
-And nodemon will be installed globally to your system path.
+## Importing
 
-You can also install nodemon as a development dependency:
+```javascript
+// Using Node.js `require()`
+const mongoose = require('mongoose');
 
-```bash
-npm install --save-dev nodemon # or using yarn: yarn add nodemon -D
+// Using ES6 imports
+import mongoose from 'mongoose';
 ```
 
-With a local installation, nodemon will not be available in your system path or you can't use it directly from the command line. Instead, the local installation of nodemon can be run by calling it from within an npm script (such as `npm start`) or using `npx nodemon`.
+## Mongoose for Enterprise
 
-# Usage
+Available as part of the Tidelift Subscription
 
-nodemon wraps your application, so you can pass all the arguments you would normally pass to your app:
+The maintainers of mongoose and thousands of other packages are working with Tidelift to deliver commercial support and maintenance for the open source dependencies you use to build your applications. Save time, reduce risk, and improve code health, while paying the maintainers of the exact dependencies you use. [Learn more.](https://tidelift.com/subscription/pkg/npm-mongoose?utm_source=npm-mongoose&utm_medium=referral&utm_campaign=enterprise&utm_term=repo)
 
-```bash
-nodemon [your node app]
-```
+## Overview
 
-For CLI options, use the `-h` (or `--help`) argument:
+### Connecting to MongoDB
 
-```bash
-nodemon -h
-```
+First, we need to define a connection. If your app uses only one database, you should use `mongoose.connect`. If you need to create additional connections, use `mongoose.createConnection`.
 
-Using nodemon is simple, if my application accepted a host and port as the arguments, I would start it as so:
-
-```bash
-nodemon ./server.js localhost 8080
-```
-
-Any output from this script is prefixed with `[nodemon]`, otherwise all output from your application, errors included, will be echoed out as expected.
-
-You can also pass the `inspect` flag to node through the command line as you would normally:
-
-```bash
-nodemon --inspect ./server.js 80
-```
-
-If you have a `package.json` file for your app, you can omit the main script entirely and nodemon will read the `package.json` for the `main` property and use that value as the app ([ref](https://github.com/remy/nodemon/issues/14)).
-
-nodemon will also search for the `scripts.start` property in `package.json` (as of nodemon 1.1.x).
-
-Also check out the [FAQ](https://github.com/remy/nodemon/blob/master/faq.md) or [issues](https://github.com/remy/nodemon/issues) for nodemon.
-
-## Automatic re-running
-
-nodemon was originally written to restart hanging processes such as web servers, but now supports apps that cleanly exit. If your script exits cleanly, nodemon will continue to monitor the directory (or directories) and restart the script if there are any changes.
-
-## Manual restarting
-
-Whilst nodemon is running, if you need to manually restart your application, instead of stopping and restart nodemon, you can type `rs` with a carriage return, and nodemon will restart your process.
-
-## Config files
-
-nodemon supports local and global configuration files. These are usually named `nodemon.json` and can be located in the current working directory or in your home directory. An alternative local configuration file can be specified with the `--config <file>` option.
-
-The specificity is as follows, so that a command line argument will always override the config file settings:
-
-- command line arguments
-- local config
-- global config
-
-A config file can take any of the command line arguments as JSON key values, for example:
-
-```json
-{
-  "verbose": true,
-  "ignore": ["*.test.js", "fixtures/*"],
-  "execMap": {
-    "rb": "ruby",
-    "pde": "processing --sketch={{pwd}} --run"
-  }
-}
-```
-
-The above `nodemon.json` file might be my global config so that I have support for ruby files and processing files, and I can run `nodemon demo.pde` and nodemon will automatically know how to run the script even though out of the box support for processing scripts.
-
-A further example of options can be seen in [sample-nodemon.md](https://github.com/remy/nodemon/blob/master/doc/sample-nodemon.md)
-
-### package.json
-
-If you want to keep all your package configurations in one place, nodemon supports using `package.json` for configuration.
-Specify the config in the same format as you would for a config file but under `nodemonConfig` in the `package.json` file, for example, take the following `package.json`:
-
-```json
-{
-  "name": "nodemon",
-  "homepage": "http://nodemon.io",
-  "...": "... other standard package.json values",
-  "nodemonConfig": {
-    "ignore": ["test/*", "docs/*"],
-    "delay": 2500
-  }
-}
-```
-
-Note that if you specify a `--config` file or provide a local `nodemon.json` any `package.json` config is ignored.
-
-*This section needs better documentation, but for now you can also see `nodemon --help config` ([also here](https://github.com/remy/nodemon/blob/master/doc/cli/config.txt))*.
-
-## Using nodemon as a module
-
-Please see [doc/requireable.md](doc/requireable.md)
-
-## Using nodemon as child process
-
-Please see [doc/events.md](doc/events.md#Using_nodemon_as_child_process)
-
-## Running non-node scripts
-
-nodemon can also be used to execute and monitor other programs. nodemon will read the file extension of the script being run and monitor that extension instead of `.js` if there's no `nodemon.json`:
-
-```bash
-nodemon --exec "python -v" ./app.py
-```
-
-Now nodemon will run `app.py` with python in verbose mode (note that if you're not passing args to the exec program, you don't need the quotes), and look for new or modified files with the `.py` extension.
-
-### Default executables
-
-Using the `nodemon.json` config file, you can define your own default executables using the `execMap` property. This is particularly useful if you're working with a language that isn't supported by default by nodemon.
-
-To add support for nodemon to know about the `.pl` extension (for Perl), the `nodemon.json` file would add:
-
-```json
-{
-  "execMap": {
-    "pl": "perl"
-  }
-}
-```
-
-Now running the following, nodemon will know to use `perl` as the executable:
-
-```bash
-nodemon script.pl
-```
-
-It's generally recommended to use the global `nodemon.json` to add your own `execMap` options. However, if there's a common default that's missing, this can be merged in to the project so that nodemon supports it by default, by changing [default.js](https://github.com/remy/nodemon/blob/master/lib/config/defaults.js) and sending a pull request.
-
-## Monitoring multiple directories
-
-By default nodemon monitors the current working directory. If you want to take control of that option, use the `--watch` option to add specific paths:
-
-```bash
-nodemon --watch app --watch libs app/server.js
-```
-
-Now nodemon will only restart if there are changes in the `./app` or `./libs` directory. By default nodemon will traverse sub-directories, so there's no need in explicitly including sub-directories.
-
-Don't use unix globbing to pass multiple directories, e.g `--watch ./lib/*`, it won't work. You need a `--watch` flag per directory watched.
-
-## Specifying extension watch list
-
-By default, nodemon looks for files with the `.js`, `.mjs`, `.coffee`, `.litcoffee`, and `.json` extensions. If you use the `--exec` option and monitor `app.py` nodemon will monitor files with the extension of `.py`. However, you can specify your own list with the `-e` (or `--ext`) switch like so:
-
-```bash
-nodemon -e js,pug
-```
-
-Now nodemon will restart on any changes to files in the directory (or subdirectories) with the extensions `.js`, `.pug`.
-
-## Ignoring files
-
-By default, nodemon will only restart when a `.js` JavaScript file changes. In some cases you will want to ignore some specific files, directories or file patterns, to prevent nodemon from prematurely restarting your application.
-
-This can be done via the command line:
-
-```bash
-nodemon --ignore lib/ --ignore tests/
-```
-
-Or specific files can be ignored:
-
-```bash
-nodemon --ignore lib/app.js
-```
-
-Patterns can also be ignored (but be sure to quote the arguments):
-
-```bash
-nodemon --ignore 'lib/*.js'
-```
-
-Note that by default, nodemon will ignore the `.git`, `node_modules`, `bower_components`, `.nyc_output`, `coverage` and `.sass-cache` directories and *add* your ignored patterns to the list. If you want to indeed watch a directory like `node_modules`, you need to [override the underlying default ignore rules](https://github.com/remy/nodemon/blob/master/faq.md#overriding-the-underlying-default-ignore-rules).
-
-## Application isn't restarting
-
-In some networked environments (such as a container running nodemon reading across a mounted drive), you will need to use the `legacyWatch: true` which enables Chokidar's polling.
-
-Via the CLI, use either `--legacy-watch` or `-L` for short:
-
-```bash
-nodemon -L
-```
-
-Though this should be a last resort as it will poll every file it can find.
-
-## Delaying restarting
-
-In some situations, you may want to wait until a number of files have changed. The timeout before checking for new file changes is 1 second. If you're uploading a number of files and it's taking some number of seconds, this could cause your app to restart multiple times unnecessarily.
-
-To add an extra throttle, or delay restarting, use the `--delay` command:
-
-```bash
-nodemon --delay 10 server.js
-```
-
-For more precision, milliseconds can be specified.  Either as a float:
-
-```bash
-nodemon --delay 2.5 server.js
-```
-
-Or using the time specifier (ms):
-
-```bash
-nodemon --delay 2500ms server.js
-```
-
-The delay figure is number of seconds (or milliseconds, if specified) to delay before restarting. So nodemon will only restart your app the given number of seconds after the *last* file change.
-
-If you are setting this value in `nodemon.json`, the value will always be interpreted in milliseconds. E.g., the following are equivalent:
-
-```bash
-nodemon --delay 2.5
-
-{
-  "delay": 2500
-}
-```
-
-## Gracefully reloading down your script
-
-It is possible to have nodemon send any signal that you specify to your application.
-
-```bash
-nodemon --signal SIGHUP server.js
-```
-
-Your application can handle the signal as follows.
+Both `connect` and `createConnection` take a `mongodb://` URI, or the parameters `host, database, port, options`.
 
 ```js
-process.once("SIGHUP", function () {
-  reloadSomeConfiguration();
-})
+await mongoose.connect('mongodb://localhost/my_database');
 ```
 
-Please note that nodemon will send this signal to every process in the process tree.
+Once connected, the `open` event is fired on the `Connection` instance. If you're using `mongoose.connect`, the `Connection` is `mongoose.connection`. Otherwise, `mongoose.createConnection` return value is a `Connection`.
 
-If you are using `cluster`, then each workers (as well as the master) will receive the signal. If you wish to terminate all workers on receiving a `SIGHUP`, a common pattern is to catch the `SIGHUP` in the master, and forward `SIGTERM` to all workers, while ensuring that all workers ignore `SIGHUP`.
+**Note:** _If the local connection fails then try using 127.0.0.1 instead of localhost. Sometimes issues may arise when the local hostname has been changed._
 
-```js
-if (cluster.isMaster) {
-  process.on("SIGHUP", function () {
-    for (const worker of Object.values(cluster.workers)) {
-      worker.process.kill("SIGTERM");
-    }
-  });
-} else {
-  process.on("SIGHUP", function() {})
-}
-```
+**Important!** Mongoose buffers all the commands until it's connected to the database. This means that you don't have to wait until it connects to MongoDB in order to define models, run queries, etc.
 
-## Controlling shutdown of your script
+### Defining a Model
 
-nodemon sends a kill signal to your application when it sees a file update. If you need to clean up on shutdown inside your script you can capture the kill signal and handle it yourself.
-
-The following example will listen once for the `SIGUSR2` signal (used by nodemon to restart), run the clean up process and then kill itself for nodemon to continue control:
+Models are defined through the `Schema` interface.
 
 ```js
-process.once('SIGUSR2', function () {
-  gracefulShutdown(function () {
-    process.kill(process.pid, 'SIGUSR2');
-  });
+const Schema = mongoose.Schema;
+const ObjectId = Schema.ObjectId;
+
+const BlogPost = new Schema({
+  author: ObjectId,
+  title: String,
+  body: String,
+  date: Date
 });
 ```
 
-Note that the `process.kill` is *only* called once your shutdown jobs are complete. Hat tip to [Benjie Gillam](http://www.benjiegillam.com/2011/08/node-js-clean-restart-and-faster-development-with-nodemon/) for writing this technique up.
+Aside from defining the structure of your documents and the types of data you're storing, a Schema handles the definition of:
 
-## Triggering events when nodemon state changes
+* [Validators](http://mongoosejs.com/docs/validation.html) (async and sync)
+* [Defaults](http://mongoosejs.com/docs/api.html#schematype_SchemaType-default)
+* [Getters](http://mongoosejs.com/docs/api.html#schematype_SchemaType-get)
+* [Setters](http://mongoosejs.com/docs/api.html#schematype_SchemaType-set)
+* [Indexes](http://mongoosejs.com/docs/guide.html#indexes)
+* [Middleware](http://mongoosejs.com/docs/middleware.html)
+* [Methods](http://mongoosejs.com/docs/guide.html#methods) definition
+* [Statics](http://mongoosejs.com/docs/guide.html#statics) definition
+* [Plugins](http://mongoosejs.com/docs/plugins.html)
+* [pseudo-JOINs](http://mongoosejs.com/docs/populate.html)
 
-If you want growl like notifications when nodemon restarts or to trigger an action when an event happens, then you can either `require` nodemon or add event actions to your `nodemon.json` file.
-
-For example, to trigger a notification on a Mac when nodemon restarts, `nodemon.json` looks like this:
-
-```json
-{
-  "events": {
-    "restart": "osascript -e 'display notification \"app restarted\" with title \"nodemon\"'"
-  }
-}
-```
-
-A full list of available events is listed on the [event states wiki](https://github.com/remy/nodemon/wiki/Events#states). Note that you can bind to both states and messages.
-
-## Pipe output to somewhere else
+The following example shows some of these features:
 
 ```js
-nodemon({
-  script: ...,
-  stdout: false // important: this tells nodemon not to output to console
-}).on('readable', function() { // the `readable` event indicates that data is ready to pick up
-  this.stdout.pipe(fs.createWriteStream('output.txt'));
-  this.stderr.pipe(fs.createWriteStream('err.txt'));
+const Comment = new Schema({
+  name: { type: String, default: 'hahaha' },
+  age: { type: Number, min: 18, index: true },
+  bio: { type: String, match: /[a-z]/ },
+  date: { type: Date, default: Date.now },
+  buff: Buffer
+});
+
+// a setter
+Comment.path('name').set(function (v) {
+  return capitalize(v);
+});
+
+// middleware
+Comment.pre('save', function (next) {
+  notify(this.get('email'));
+  next();
 });
 ```
 
-## Using nodemon in your gulp workflow
+Take a look at the example in [`examples/schema/schema.js`](https://github.com/Automattic/mongoose/blob/master/examples/schema/schema.js) for an end-to-end example of a typical setup.
 
-Check out the [gulp-nodemon](https://github.com/JacksonGariety/gulp-nodemon) plugin to integrate nodemon with the rest of your project's gulp workflow.
+### Accessing a Model
 
-## Using nodemon in your Grunt workflow
+Once we define a model through `mongoose.model('ModelName', mySchema)`, we can access it through the same function
 
-Check out the [grunt-nodemon](https://github.com/ChrisWren/grunt-nodemon) plugin to integrate nodemon with the rest of your project's grunt workflow.
+```js
+const MyModel = mongoose.model('ModelName');
+```
 
-## Pronunciation
+Or just do it all at once
 
-> nodemon, is it pronounced: node-mon, no-demon or node-e-mon (like pokémon)?
+```js
+const MyModel = mongoose.model('ModelName', mySchema);
+```
 
-Well...I've been asked this many times before. I like that I've been asked this before. There's been bets as to which one it actually is.
+The first argument is the _singular_ name of the collection your model is for. **Mongoose automatically looks for the _plural_ version of your model name.** For example, if you use
 
-The answer is simple, but possibly frustrating. I'm not saying (how I pronounce it). It's up to you to call it as you like. All answers are correct :)
+```js
+const MyModel = mongoose.model('Ticket', mySchema);
+```
 
-## Design principles
+Then `MyModel` will use the __tickets__ collection, not the __ticket__ collection. For more details read the [model docs](https://mongoosejs.com/docs/api/mongoose.html#mongoose_Mongoose-model).
 
-- Fewer flags is better
-- Works across all platforms
-- Fewer features
-- Let individuals build on top of nodemon
-- Offer all CLI functionality as an API
-- Contributions must have and pass tests
+Once we have our model, we can then instantiate it, and save it:
 
-Nodemon is not perfect, and CLI arguments has sprawled beyond where I'm completely happy, but perhaps it can be reduced a little one day.
+```js
+const instance = new MyModel();
+instance.my.key = 'hello';
+instance.save(function (err) {
+  //
+});
+```
 
-## FAQ
+Or we can find documents from the same collection
 
-See the [FAQ](https://github.com/remy/nodemon/blob/master/faq.md) and please add your own questions if you think they would help others.
+```js
+MyModel.find({}, function (err, docs) {
+  // docs.forEach
+});
+```
 
-## Backers
+You can also `findOne`, `findById`, `update`, etc.
 
-Thank you to all [our backers](https://opencollective.com/nodemon#backer)! 🙏
+```js
+const instance = await MyModel.findOne({ ... });
+console.log(instance.my.key);  // 'hello'
+```
 
-[![nodemon backers](https://opencollective.com/nodemon/backers.svg?width=890)](https://opencollective.com/nodemon#backers)
+For more details check out [the docs](http://mongoosejs.com/docs/queries.html).
 
-## Sponsors
+**Important!** If you opened a separate connection using `mongoose.createConnection()` but attempt to access the model through `mongoose.model('ModelName')` it will not work as expected since it is not hooked up to an active db connection. In this case access your model through the connection you created:
 
-Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [Sponsor this project today ❤️](https://opencollective.com/nodemon#sponsor)
+```js
+const conn = mongoose.createConnection('your connection string');
+const MyModel = conn.model('ModelName', schema);
+const m = new MyModel;
+m.save(); // works
+```
 
-<div style="overflow: hidden; margin-bottom: 80px;">
-<a href='https://padlet.com/'><img src='https://images.opencollective.com/padlet/320fa3e/logo/256.png' style='object-fit: contain; float: left; margin:12px' height='120' width='120'></a><a href='https://topaussiecasinos.com/'>
+vs
 
-<!-- generated with https://jqterm.com/8d123effeb793313c2a0ad559adbc6a4?query=def+getImage%3A%0A%09.+as+%24_+%7C%0A%09%7B+%0A++++++%22206432%22%3A+%22https%3A%2F%2Fuser-images.githubusercontent.com%2F13700%2F127474039-8ba5ac8c-2095-4984-9309-54ff15e95340.png%22%2C%0A%09++%22215800%22%3A+%22https%3A%2F%2Fuser-images.githubusercontent.com%2F13700%2F151881982-04677f3d-e2e1-44ee-a168-258b242b1ef4.svg%22%2C%0A++++++%22snyk%22%3A+%22https%3A%2F%2Fuser-images.githubusercontent.com%2F13700%2F165926338-ae9458ab-89c5-4c97-bc9b-86b5049576bf.png%22%0A++++%7D+%7C+%28.%5B%22%5C%28%24_.MemberId%29%22%5D+%2F%2F+%24_.image%29%0A%3B%0A%0Adef+getUrl%3A%0A%09.+as+%24_+%7C+%09%7B+%0A++++++%22snyk%22%3A+%22https%3A%2F%2Fsnyk.co%2Fnodemon%22%0A++++%7D+%7C+%28.%5B%22%5C%28%24_.MemberId%29%22%5D+%2F%2F+%24_.website%29%0A%3B%0A%0Adef+tohtml%3A%0A%09%22%3Ca+href%3D%27%5C%28getUrl%29%27%3E%3Cimg+src%3D%27%5C%28getImage%29%27+style%3D%27object-fit%3A+contain%3B+float%3A+left%3B+margin%3A12px%27+height%3D%27120%27+width%3D%27120%27%3E%3C%2Fa%3E%22%0A%3B%0A%0A.+%2B+%5B%7B%0A++isActive%3A+true%2C%0A++MemberId%3A+%22snyk%22%2C%0A++image%3A+true%2C%0A++createdAt%3A+%222022-04-29+12%3A00%3A00%22%0A%7D%5D+%7C+%0A%0Asort_by%28.createdAt%29+%7C+map%28select%28.isActive+%3D%3D+true+and+.image%29+%7C+tohtml%29+%7C+join%28%22%22%29&raw=true -->
+```js
+const conn = mongoose.createConnection('your connection string');
+const MyModel = mongoose.model('ModelName', schema);
+const m = new MyModel;
+m.save(); // does not work b/c the default connection object was never connected
+```
 
-<a href='https://najlepsibukmacherzy.pl/ranking-legalnych-bukmacherow/'><img src='https://opencollective-production.s3.us-west-1.amazonaws.com/52acecf0-608a-11eb-b17f-5bca7c67fe7b.png' style='object-fit: contain; float: left; margin:12px' height='120' width='120'></a><a href='https://topaussiecasinos.com/'><img src='https://opencollective-production.s3.us-west-1.amazonaws.com/89ea5890-6d1c-11ea-9dd9-330b3b2faf8b.png' style='object-fit: contain; float: left; margin:12px' height='120' width='120'></a><a href='https://netticasinohex.com/'><img src='https://opencollective-production.s3.us-west-1.amazonaws.com/b802aa50-7b1a-11ea-bcaf-0dc68ad9bc17.png' style='object-fit: contain; float: left; margin:12px' height='120' width='120'></a><a href='https://polskiekasynohex.com/'><img src='https://opencollective-production.s3.us-west-1.amazonaws.com/2bb0d6e0-99c8-11ea-9349-199aa0d5d24a.png' style='object-fit: contain; float: left; margin:12px' height='120' width='120'></a><a href='https://www.casinoonlineaams.com'><img src='https://opencollective-production.s3.us-west-1.amazonaws.com/a0694620-b88f-11eb-b3a4-b97529e4b911.png' style='object-fit: contain; float: left; margin:12px' height='120' width='120'></a><a href='https://casinowhizz.com'><img src='https://opencollective-production.s3.us-west-1.amazonaws.com/23256a80-f5c1-11eb-99f7-fbf8e4d6c6be.jpg' style='object-fit: contain; float: left; margin:12px' height='120' width='120'></a><a href='https://aussielowdepositcasino.com/'><img src='https://user-images.githubusercontent.com/13700/151881982-04677f3d-e2e1-44ee-a168-258b242b1ef4.svg' style='object-fit: contain; float: left; margin:12px' height='120' width='120'></a><a href='https://www.casinot.net'><img src='https://opencollective-production.s3.us-west-1.amazonaws.com/73b4fc10-7591-11ea-a1d4-01a20d893b4f.png' style='object-fit: contain; float: left; margin:12px' height='120' width='120'></a><a href='https://www.parhaatkasinot.com'><img src='https://opencollective-production.s3.us-west-1.amazonaws.com/4dfc1820-b6ee-11ea-9fa9-e39f53823609.png' style='object-fit: contain; float: left; margin:12px' height='120' width='120'></a><a href='https://www.cryptosnacks.org/bitcoin-casino/'><img src='https://opencollective-production.s3.us-west-1.amazonaws.com/db217a90-122f-11ec-81e8-594bc2daa9dc.png' style='object-fit: contain; float: left; margin:12px' height='120' width='120'></a><a href='https://www.kasinot.fi'><img src='https://logo.clearbit.com/www.kasinot.fi' style='object-fit: contain; float: left; margin:12px' height='120' width='120'></a><a href='https://betomania.pl/ranking-bukmacherow/'><img src='https://logo.clearbit.com/betomania.pl' style='object-fit: contain; float: left; margin:12px' height='120' width='120'></a><a href='https://www.targetedwebtraffic.com'><img src='https://logo.clearbit.com/targetedwebtraffic.com' style='object-fit: contain; float: left; margin:12px' height='120' width='120'></a><a href='https://casino-wise.com/'><img src='https://opencollective-production.s3.us-west-1.amazonaws.com/734011b0-46ac-11eb-8d3c-79b2cf7dfe51.png' style='object-fit: contain; float: left; margin:12px' height='120' width='120'></a><a href='https://www.paraskasino.fi'><img src='https://logo.clearbit.com/www.paraskasino.fi' style='object-fit: contain; float: left; margin:12px' height='120' width='120'></a><a href='https://freebets.ltd.uk'><img src='https://logo.clearbit.com/freebets.ltd.uk' style='object-fit: contain; float: left; margin:12px' height='120' width='120'></a><a href='https://www.thecasinodb.com'><img src='https://logo.clearbit.com/thecasinodb.com' style='object-fit: contain; float: left; margin:12px' height='120' width='120'></a><a href='https://online-casinos.xyz'><img src='https://opencollective-production.s3.us-west-1.amazonaws.com/bd4ff1f0-279b-11ec-9a5a-0519330cdfea.png' style='object-fit: contain; float: left; margin:12px' height='120' width='120'></a><a href='https://www.aceonlinecasino.co.uk'><img src='https://opencollective-production.s3.us-west-1.amazonaws.com/b3376c80-279f-11ec-9a5a-0519330cdfea.jpg' style='object-fit: contain; float: left; margin:12px' height='120' width='120'></a><a href='https://www.casinoutansvenskalicensen.se/'><img src='https://opencollective-production.s3.us-west-1.amazonaws.com/ed105cb0-b01f-11ec-935f-77c14be20a90.png' style='object-fit: contain; float: left; margin:12px' height='120' width='120'></a><a href='https://snyk.co/nodemon'><img src='https://user-images.githubusercontent.com/13700/165926338-ae9458ab-89c5-4c97-bc9b-86b5049576bf.png' style='object-fit: contain; float: left; margin:12px' height='120' width='120'></a><a href='https://online-casinos-australia.com/'><img src='https://opencollective-production.s3.us-west-1.amazonaws.com/88bb6d20-900a-11ec-8a5a-a92310c15e5b.jpg' style='object-fit: contain; float: left; margin:12px' height='120' width='120'></a>
-</div>
+### Embedded Documents
 
-# License
+In the first example snippet, we defined a key in the Schema that looks like:
 
-MIT [http://rem.mit-license.org](http://rem.mit-license.org)
+```
+comments: [Comment]
+```
+
+Where `Comment` is a `Schema` we created. This means that creating embedded documents is as simple as:
+
+```js
+// retrieve my model
+const BlogPost = mongoose.model('BlogPost');
+
+// create a blog post
+const post = new BlogPost();
+
+// create a comment
+post.comments.push({ title: 'My comment' });
+
+post.save(function (err) {
+  if (!err) console.log('Success!');
+});
+```
+
+The same goes for removing them:
+
+```js
+BlogPost.findById(myId, function (err, post) {
+  if (!err) {
+    post.comments[0].remove();
+    post.save(function (err) {
+      // do something
+    });
+  }
+});
+```
+
+Embedded documents enjoy all the same features as your models. Defaults, validators, middleware. Whenever an error occurs, it's bubbled to the `save()` error callback, so error handling is a snap!
+
+
+### Middleware
+
+See the [docs](http://mongoosejs.com/docs/middleware.html) page.
+
+#### Intercepting and mutating method arguments
+
+You can intercept method arguments via middleware.
+
+For example, this would allow you to broadcast changes about your Documents every time someone `set`s a path in your Document to a new value:
+
+```js
+schema.pre('set', function (next, path, val, typel) {
+  // `this` is the current Document
+  this.emit('set', path, val);
+
+  // Pass control to the next pre
+  next();
+});
+```
+
+Moreover, you can mutate the incoming `method` arguments so that subsequent middleware see different values for those arguments. To do so, just pass the new values to `next`:
+
+```js
+.pre(method, function firstPre (next, methodArg1, methodArg2) {
+  // Mutate methodArg1
+  next("altered-" + methodArg1.toString(), methodArg2);
+});
+
+// pre declaration is chainable
+.pre(method, function secondPre (next, methodArg1, methodArg2) {
+  console.log(methodArg1);
+  // => 'altered-originalValOfMethodArg1'
+
+  console.log(methodArg2);
+  // => 'originalValOfMethodArg2'
+
+  // Passing no arguments to `next` automatically passes along the current argument values
+  // i.e., the following `next()` is equivalent to `next(methodArg1, methodArg2)`
+  // and also equivalent to, with the example method arg
+  // values, `next('altered-originalValOfMethodArg1', 'originalValOfMethodArg2')`
+  next();
+});
+```
+
+#### Schema gotcha
+
+`type`, when used in a schema has special meaning within Mongoose. If your schema requires using `type` as a nested property you must use object notation:
+
+```js
+new Schema({
+  broken: { type: Boolean },
+  asset: {
+    name: String,
+    type: String // uh oh, it broke. asset will be interpreted as String
+  }
+});
+
+new Schema({
+  works: { type: Boolean },
+  asset: {
+    name: String,
+    type: { type: String } // works. asset is an object with a type property
+  }
+});
+```
+
+### Driver Access
+
+Mongoose is built on top of the [official MongoDB Node.js driver](https://github.com/mongodb/node-mongodb-native). Each mongoose model keeps a reference to a [native MongoDB driver collection](http://mongodb.github.io/node-mongodb-native/2.1/api/Collection.html). The collection object can be accessed using `YourModel.collection`. However, using the collection object directly bypasses all mongoose features, including hooks, validation, etc. The one
+notable exception that `YourModel.collection` still buffers
+commands. As such, `YourModel.collection.find()` will **not**
+return a cursor.
+
+## API Docs
+
+Find the API docs [here](http://mongoosejs.com/docs/api.html), generated using [dox](https://github.com/tj/dox)
+and [acquit](https://github.com/vkarpov15/acquit).
+
+## Related Projects
+
+#### MongoDB Runners
+
+- [run-rs](https://www.npmjs.com/package/run-rs)
+- [mongodb-memory-server](https://www.npmjs.com/package/mongodb-memory-server)
+- [mongodb-topology-manager](https://www.npmjs.com/package/mongodb-topology-manager)
+
+#### Unofficial CLIs
+
+- [mongoosejs-cli](https://www.npmjs.com/package/mongoosejs-cli)
+
+#### Data Seeding
+
+- [dookie](https://www.npmjs.com/package/dookie)
+- [seedgoose](https://www.npmjs.com/package/seedgoose)
+- [mongoose-data-seed](https://www.npmjs.com/package/mongoose-data-seed)
+
+#### Express Session Stores
+
+- [connect-mongodb-session](https://www.npmjs.com/package/connect-mongodb-session)
+- [connect-mongo](https://www.npmjs.com/package/connect-mongo)
+
+## License
+
+Copyright (c) 2010 LearnBoost &lt;dev@learnboost.com&gt;
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+'Software'), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
