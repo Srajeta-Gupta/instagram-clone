@@ -1,0 +1,26 @@
+.home {
+	margin-top: 5vh;
+}
+
+.home_content {
+	display: flex;
+	justify-content: center;
+	gap: 2.5vw;
+}
+
+.left_content{
+	max-width: 35rem;
+    width: 100%;
+}
+
+.followerSuggestions{
+	height: 100%;
+    position: sticky;
+    top: 15vh;
+}
+
+@media only screen and (max-width: 768px) {
+	.home_content {
+		gap: 0px;
+	}
+}

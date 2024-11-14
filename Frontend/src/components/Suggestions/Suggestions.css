@@ -1,0 +1,139 @@
+.suggestions_main_container {
+	display: flex;
+	flex-direction: column;
+	gap: 2vh;
+	width: 100%;
+	max-width: 20rem;
+}
+
+.user_info {
+	display: flex;
+	justify-content: space-between;
+}
+
+.user_details {
+	word-break: break-word;
+}
+
+.user_info > img {
+	width: 4rem;
+	height: 4rem;
+
+	mix-blend-mode: multiply;
+	border-radius: 50%;
+
+	background: linear-gradient(to right, hsl(37, 97%, 70%), hsl(329, 70%, 58%))
+		border-box;
+	border: medium solid transparent;
+	cursor: pointer;
+	object-fit: cover;
+}
+
+.user_id {
+	font-size: 14px;
+	font-weight: 600;
+	margin-bottom: 0px;
+	cursor: pointer;
+	color: #252525;
+}
+
+.username {
+	font-size: small;
+	margin-top: 0px;
+	color: #252525;
+}
+
+.suggestions_header {
+	display: flex;
+	justify-content: space-between;
+	padding: 10px;
+	padding-top: 0px;
+}
+
+.suggested_users_image {
+	width: 3rem;
+	height: 3rem;
+
+	mix-blend-mode: multiply;
+	border-radius: 50%;
+
+	background: linear-gradient(to right, hsl(37, 97%, 70%), hsl(329, 70%, 58%))
+		border-box;
+	border: medium solid transparent;
+	cursor: pointer;
+	object-fit: cover;
+}
+
+.suggestions {
+	display: flex;
+	flex-direction: column;
+}
+
+.suggested_users {
+	display: flex;
+	gap: 1vw;
+	justify-content: flex-start;
+	margin-left: 0.5rem;
+}
+
+.suggestion_content {
+	display: flex;
+	gap: 1vw;
+	justify-content: space-between;
+	margin-left: 0.5rem;
+}
+
+.suggestion_content_btn {
+	border: 0px;
+	cursor: pointer;
+	background: transparent;
+}
+
+.suggestion_content_btn:hover {
+	color: var(--photo);
+}
+
+.suggestion_footer_list {
+	list-style: none;
+	display: flex;
+	gap: 0.5rem;
+	flex-wrap: wrap;
+	font-size: 0.75rem;
+	color: rgb(199, 199, 199);
+	padding: 0px;
+	cursor: pointer;
+	width: 75%;
+	margin: auto;
+	justify-content: center;
+	margin-bottom: 1rem;
+}
+
+.footer_list > li:hover {
+	color: black;
+	transform: scale(1.2);
+}
+
+.footer {
+	font-size: 0.9rem;
+	color: rgb(199, 199, 199);
+}
+
+.suggestions_footer {
+	text-align: center;
+}
+
+.edit_profileBtn {
+	margin: auto 0px;
+}
+
+.other_users {
+	max-height: 18rem;
+	overflow: hidden;
+}
+
+@media only screen and (max-width: 1000px) {
+	.suggestions_main_container,
+	#suggestions_loader {
+		display: none;
+	}
+}
